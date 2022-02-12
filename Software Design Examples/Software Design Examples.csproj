@@ -1,0 +1,57 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <RootNamespace>Software_Design_Examples</RootNamespace>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\Coke Round Logo.png" />
+    <None Remove="Resources\CokeLogo.jpg" />
+    <None Remove="Resources\Config.txt" />
+    <None Remove="Resources\Diet Coke Round Logo.png" />
+    <None Remove="Resources\Lemonade Round Logo.jpg" />
+    <None Remove="Resources\Transparent.jpg" />
+    <None Remove="Resources\Water Round Logo.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Service Requests\" />
+    <Folder Include="Payment Processing\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Coke Round Logo.png" />
+    <Resource Include="Resources\CokeLogo.jpg" />
+    <EmbeddedResource Include="Resources\Config.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <Resource Include="Resources\Diet Coke Round Logo.png" />
+    <Resource Include="Resources\Lemonade Round Logo.jpg" />
+    <Resource Include="Resources\Transparent.jpg" />
+    <Resource Include="Resources\Water Round Logo.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>

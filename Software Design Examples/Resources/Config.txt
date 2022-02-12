@@ -1,0 +1,56 @@
+{
+  "Inventories": [
+    {
+      "Id": 1,
+      "ProductName": "Coke",
+      "MaxAvailable": 100,
+      "RefillAmount": 40,
+      "NumberAvailable": 68,
+      "Price": 1.75
+    },
+    {
+      "Id": 2,
+      "ProductName": "Diet Coke",
+      "MaxAvailable": 100,
+      "RefillAmount": 40,
+      "NumberAvailable": 97,
+      "Price": 1.75
+    },
+    {
+      "Id": 3,
+      "ProductName": "Water",
+      "MaxAvailable": 100,
+      "RefillAmount": 40,
+      "NumberAvailable": 84,
+      "Price": 1.25
+    },
+    {
+      "Id": 4,
+      "ProductName": "Lemonade",
+      "MaxAvailable": 100,
+      "RefillAmount": 40,
+      "NumberAvailable": 97,
+      "Price": 1.5
+    }
+  ],
+  "Ledger": {
+    "Income": 0.0,
+    "CashOnHand": 0.0,
+    "RefillAmount": 0.0,
+    "MaxAmount": 0.0,
+    "NumberOfQuarters": 0,
+    "NumberOfDimes": 0,
+    "NumberOfNickels": 0,
+    "NumberOfOnes": 0,
+    "NumberOfFives": 0,
+    "NumberOfTens": 0
+  },
+  "ActiveRequests": [
+    {
+      "Id": 1,
+      "ServiceRequestType": "",
+      "DateOfRequest": "",
+      "Message": "Testing."
+    }
+  ]
+}

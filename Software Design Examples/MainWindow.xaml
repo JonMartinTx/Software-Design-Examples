@@ -1,0 +1,206 @@
+﻿<Window
+    x:Class="Software_Design_Examples.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Software_Design_Examples"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:system="clr-namespace:System;assembly=mscorlib"
+    xmlns:vm="clr-namespace:Software_Design_Examples.View_Model"
+    xmlns:vw="clr-namespace:Software_Design_Examples.Views"
+    Title="MainWindow"
+    Width="1000"
+    Height="650"
+    mc:Ignorable="d">
+    <Window.DataContext>
+        <vm:MainViewModel />
+    </Window.DataContext>
+    <Window.Resources>
+        <vm:MainViewModel
+            x:Key="MainViewModel"
+            AvailableChange="0.00"
+            ChangeDue="0.00"
+            PaymentAmount="0.00"/>
+        <BooleanToVisibilityConverter x:Key="VisibilityConverter" x:Name="VisibilityConverter" />
+    </Window.Resources>
+    <Grid Background="LightBlue">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.ColumnSpan="5" Background="MediumSeaGreen">
+            <TextBlock Style="{StaticResource TitleBlock}">Beverage Vending Machine</TextBlock>
+        </StackPanel>
+
+        <ListView
+            Name="Products"
+            Grid.Row="1"
+            Grid.RowSpan="4"
+            Grid.Column="0"
+            Grid.ColumnSpan="3"
+            d:ItemsSource="{d:SampleData ItemCount=5}"
+            ItemsSource="{Binding VendingList.VendingItems}"
+            Style="{StaticResource VendingList}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <DockPanel
+                        Grid.ColumnSpan="3"
+                        Width="450"
+                        Tag="{Binding}">
+                        <Button
+                            Name="PurchaseButton"
+                            Click="PurchaseBeverage"
+                            DockPanel.Dock="Left"
+                            Style="{StaticResource VendingButton}"
+                            Tag="{Binding}">
+                            <Image
+                                Width="40"
+                                Height="40"
+                                Source="{Binding ImageSource}" />
+                        </Button>
+                        <StackPanel DockPanel.Dock="Right">
+                            <TextBlock Style="{StaticResource CustomerLabel}" Text="{Binding Name}" />
+                            <TextBlock Style="{StaticResource CustomerLabel}" Text="{Binding Price}" />
+                            <TextBlock Foreground="Red" Visibility="{Binding OutOfStock, Converter={StaticResource VisibilityConverter}}">Out of Stock!</TextBlock>
+                        </StackPanel>
+                    </DockPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <Button
+            Name="AddQuarter"
+            Grid.Row="5"
+            Grid.Column="0"
+            Click="AddQuarter_ToPayment"
+            CommandParameter="0.25"
+            Content="$0.25"
+            Style="{StaticResource MoneyButton}" />
+        <Button
+            Grid.Row="5"
+            Grid.Column="1"
+            Click="Add_HalfDollar_ToPayment"
+            CommandParameter="0.50"
+            Content="$0.50"
+            Style="{StaticResource MoneyButton}" />
+        <Button
+            Grid.Row="5"
+            Grid.Column="2"
+            Click="Add_Dollar_ToPayment"
+            CommandParameter="1.00"
+            Content="$1.00"
+            Style="{StaticResource MoneyButton}" />
+
+        <StackPanel
+            Name="PaymentStackPanel"
+            Grid.Row="6"
+            Grid.Column="0"
+            Grid.ColumnSpan="3"
+            DataContext="{StaticResource MainViewModel}">
+            <TextBlock Style="{StaticResource CustomerLabel}" Text="{Binding Source={StaticResource MainViewModel}, Path=PaymentAmount, StringFormat=Inserted {0:C}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBlock Style="{StaticResource CustomerLabel}" Text="{Binding Source={StaticResource MainViewModel}, Path=ChangeDue, StringFormat=Change Due: {0:C}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+        </StackPanel>
+        <DockPanel
+            Name="InventoryDockPanel"
+            Grid.Row="1"
+            Grid.RowSpan="3"
+            Grid.Column="3"
+            Grid.ColumnSpan="2"
+            Margin="5"
+            Background="BlanchedAlmond"
+            Visibility="{Binding InManagerMode, Converter={StaticResource VisibilityConverter}}">
+            <TextBlock
+                HorizontalAlignment="Center"
+                DockPanel.Dock="Top"
+                FontSize="28"
+                Style="{StaticResource CustomerLabel}">
+                Inventory
+            </TextBlock>
+            <StackPanel DataContext="{StaticResource MainViewModel}" DockPanel.Dock="Bottom">
+                <TextBlock
+                    Margin="5"
+                    FontSize="16"
+                    Style="{StaticResource CustomerLabel}"
+                    Text="{Binding Source={StaticResource MainViewModel}, Path=Coke, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                <TextBlock
+                    Margin="5"
+                    FontSize="16"
+                    Style="{StaticResource CustomerLabel}"
+                    Text="{Binding Source={StaticResource MainViewModel}, Path=DietCoke, Mode=OneWay}" />
+                <TextBlock
+                    Margin="5"
+                    FontSize="16"
+                    Style="{StaticResource CustomerLabel}"
+                    Text="{Binding Source={StaticResource MainViewModel}, Path=Water, Mode=OneWay}" />
+                <TextBlock
+                    Margin="5"
+                    FontSize="16"
+                    Style="{StaticResource CustomerLabel}"
+                    Text="{Binding Source={StaticResource MainViewModel}, Path=Lemonade, Mode=OneWay}" />
+            </StackPanel>
+        </DockPanel>
+
+        <StackPanel
+            Name="ManagerTicketResolution"
+            Grid.Row="4"
+            Grid.RowSpan="3"
+            Grid.Column="3"
+            Grid.ColumnSpan="2"
+            Background="DarkKhaki"
+            Visibility="{Binding InManagerMode, Converter={StaticResource VisibilityConverter}}">
+            <TextBlock
+                HorizontalAlignment="Center"
+                DockPanel.Dock="Top"
+                FontSize="28"
+                Style="{StaticResource CustomerLabel}">
+                Manager
+            </TextBlock>
+            <Button Click="Refill_Beverages" Style="{StaticResource ManagerButton}">
+                Refill Supply
+            </Button>
+            <Button Click="WithdrawPayment" Style="{StaticResource ManagerButton}">
+                Withdraw Payment
+            </Button>
+            <Button Style="{StaticResource ManagerButton}">
+                Submit Ticket for Mechanical Failure
+            </Button>
+        </StackPanel>
+        <StackPanel
+            Name="ManagerMode"
+            Grid.Row="7"
+            Grid.Column="2">
+            <Button
+                Name="EnterManagerMode"
+                Grid.Row="7"
+                Grid.Column="2"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Center"
+                Click="EnterManagerMode_OnClick"
+                Content="Enter Manager Mode"
+                Visibility="{Binding InCustomerMode, Converter={StaticResource VisibilityConverter}}" />
+            <Button
+                Name="ExitManagerMode"
+                Grid.Row="7"
+                Grid.Column="2"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Center"
+                Click="ExitManagerMode_OnClick"
+                Content="Exit Manager Mode"
+                Visibility="{Binding InManagerMode, Converter={StaticResource VisibilityConverter}}" />
+        </StackPanel>
+    </Grid>
+</Window>
